@@ -107,7 +107,6 @@ def preprocess1(csv_name):
     data=Industry_neutrality(data,data.columns[-2],data.columns[-1])
     data=data.fillna(0)
     data.to_csv('../preprocess_data/deta2/{}'.format(csv_name),index=False,encoding='GBK')
-    print('ok')
 #数据处理deta3
 def preprocess2(csv_name):
     data = pd.read_csv('../preprocess_data/deta7/{}'.format(csv_name),encoding='GBK')
@@ -119,7 +118,6 @@ def preprocess2(csv_name):
     data = Industry_neutrality(data,data.columns[-2], data.columns[-1])
     data = data.fillna(0)
     data.to_csv('../preprocess_data/deta3/{}'.format(csv_name),index=False,encoding='GBK')
-    print('ok')
 #对deta4中的数据进行处理，并写入prepocess/deta5中
 def preprocess4(csv_name):
     data=pd.read_csv('../preprocess_data/deta5/{}'.format(csv_name),encoding='GBK')
@@ -154,7 +152,45 @@ def name(file_path):
         if os.path.splitext(j)[1] == '.csv':
             file_name.append(j)
     return file_name
+#填充na值
+def filldata4(csv_name):
+    df=pd.read_csv('../preprocess_data/deta5/{}'.format(csv_name),encoding='GBK')
+    df1=df.pivot(index=df.columns[2],columns=df.columns[0],values=df.columns[3])
+    df1=df1.fillna(method='ffill')
+    df1.to_csv('../preprocess_data/deta/data_{}'.format(csv_name),index=False,encoding='GBK')
+    df2=df.pivot(index=df.columns[2],columns=df.columns[0],values='mean')
+    df2=df2.fillna(method='ffill')
+    df2.to_csv('../preprocess_data/deta/mean_{}'.format(csv_name),index=False,encoding='GBK')
+    df3=df.pivot(index=df.columns[2],columns=df.columns[0],values='std')
+    df3=df2.fillna(method='ffill')
+    df3.to_csv('../preprocess_data/deta/std_{}'.format(csv_name),index=False,encoding='GBK')
 
+def filldata1(csv_name):
+    df=pd.read_csv('../preprocess_data/deta2/{}'.format(csv_name),encoding='GBK')
+    df1=df.pivot(index=df.columns[1],columns=df.columns[0],values=df.columns[2])
+    df1=df1.fillna(method='ffill')
+    df1.to_csv('../preprocess_data/deta/data_{}'.format(csv_name),index=False,encoding='GBK')
+    df2=df.pivot(index=df.columns[1],columns=df.columns[0],values='mean')
+    df2=df2.fillna(method='ffill')
+    df2.to_csv('../preprocess_data/deta/mean_{}'.format(csv_name),index=False,encoding='GBK')
+    df3=df.pivot(index=df.columns[1],columns=df.columns[0],values='std')
+    df3=df2.fillna(method='ffill')
+    df3.to_csv('../preprocess_data/deta/std_{}'.format(csv_name),index=False,encoding='GBK')
+
+def filldata2(csv_name):
+    df=pd.read_csv('../preprocess_data/deta3/{}'.format(csv_name),encoding='GBK')
+    df1=df.pivot(index=df.columns[1],columns=df.columns[0],values=df.columns[2])
+    df1=df1.fillna(method='ffill')
+    df1.to_csv('../preprocess_data/deta/data_{}'.format(csv_name),index=False,encoding='GBK')
+    try:
+        df2=df.pivot(index=df.columns[1],columns=df.columns[0],values='mean')
+        df2=df2.fillna(method='ffill')
+        df2.to_csv('../preprocess_data/deta/mean_{}'.format(csv_name),index=False,encoding='GBK')
+        df3=df.pivot(index=df.columns[1],columns=df.columns[0],values='std')
+        df3=df2.fillna(method='ffill')
+        df3.to_csv('../preprocess_data/deta/std_{}'.format(csv_name),index=False,encoding='GBK')
+    except:
+        return
 #将数据合并到dataframe中，并写入prepocess/deta4文件
 #StandardDeviationOfDailyReturn120
 StandardDeviationOfDailyReturn120=pd.DataFrame(columns=['上市公司代码_Comcd','最新股票名称_Lstknm','日期_Date','日收益标准差_120日移动平均_Dstd120'])
@@ -202,6 +238,7 @@ for i in range(1,14):
 DailyReturnVolatlity120=DailyReturnVolatlity120.rename(columns={'波动率_120日简单移动平均()_Sma120':'DailyReturnVolatlity120'})
 DailyReturnVolatlity120.to_csv('../preprocess_data/deta4/DailyReturnVolatlity120.csv',index=False,encoding='GBK')
 #数据筛选
+print('数据筛选:\n')
 file_name=name(r'../data/deta2')
 print(file_name)
 for i in file_name:
@@ -217,10 +254,12 @@ print(file_name)
 for i in file_name:
    drop_films4(i)
 #数据处理
+print('数据处理：\n')
 file_name=name(r'../preprocess_data/deta5')
 for i in file_name:
     print(i)
     preprocess4(i)
+    filldata4(i)
 file_name=name(r'../preprocess_data/deta6')
 for i in file_name:
     print(i)
@@ -229,6 +268,16 @@ file_name=name(r'../preprocess_data/deta7')
 for i in file_name:
     print(i)
     preprocess2(i)
+print('数据填充：\n')
+#数据填充
+file_name=name(r'../preprocess_data/deta2')
+for i in file_name:
+    print(i)
+    filldata1(i)
+file_name=name(r'../preprocess_data/deta3')
+for i in file_name:
+    print(i)
+    filldata2(i)
     
 
 
