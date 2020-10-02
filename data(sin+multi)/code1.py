@@ -18,11 +18,11 @@ nxtrtn = pd.read_csv("next_rtn.csv")
 stockname = nxtrtn.columns[1:]
 
 dates = nxtrtn["Date"]
-
+ts[2010/01/01:2016/12/31]
 CashRet = pd.read_csv("经营活动产生现金流增长率.csv")
 
 CashRet["Date"] == dates
-
+ts[2010/01/01:2016/12/31]
 all(CashRet.columns[1:]==nxtrtn.columns[1:])
 
 #################################################################################
