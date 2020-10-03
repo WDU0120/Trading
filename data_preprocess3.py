@@ -157,40 +157,49 @@ def filldata4(csv_name):
     df=pd.read_csv('../preprocess_data/deta5/{}'.format(csv_name),encoding='GBK')
     df1=df.pivot(index=df.columns[2],columns=df.columns[0],values=df.columns[3])
     df1=df1.fillna(method='ffill')
-    df1.to_csv('../preprocess_data/deta/data_{}'.format(csv_name),index=False,encoding='GBK')
+    print(df1)
+    df1.to_csv('../preprocess_data/deta/data_{}'.format(csv_name),encoding='GBK')
     df2=df.pivot(index=df.columns[2],columns=df.columns[0],values='mean')
     df2=df2.fillna(method='ffill')
-    df2.to_csv('../preprocess_data/deta/mean_{}'.format(csv_name),index=False,encoding='GBK')
+    df2.to_csv('../preprocess_data/deta/mean_{}'.format(csv_name),encoding='GBK')
     df3=df.pivot(index=df.columns[2],columns=df.columns[0],values='std')
     df3=df2.fillna(method='ffill')
-    df3.to_csv('../preprocess_data/deta/std_{}'.format(csv_name),index=False,encoding='GBK')
+    df3.to_csv('../preprocess_data/deta/std_{}'.format(csv_name),encoding='GBK')
 
 def filldata1(csv_name):
     df=pd.read_csv('../preprocess_data/deta2/{}'.format(csv_name),encoding='GBK')
     df1=df.pivot(index=df.columns[1],columns=df.columns[0],values=df.columns[2])
     df1=df1.fillna(method='ffill')
-    df1.to_csv('../preprocess_data/deta/data_{}'.format(csv_name),index=False,encoding='GBK')
+    print(df1)
+    df1.to_csv('../preprocess_data/deta/data_{}'.format(csv_name),encoding='GBK')
     df2=df.pivot(index=df.columns[1],columns=df.columns[0],values='mean')
     df2=df2.fillna(method='ffill')
-    df2.to_csv('../preprocess_data/deta/mean_{}'.format(csv_name),index=False,encoding='GBK')
+    df2.to_csv('../preprocess_data/deta/mean_{}'.format(csv_name),encoding='GBK')
     df3=df.pivot(index=df.columns[1],columns=df.columns[0],values='std')
     df3=df2.fillna(method='ffill')
-    df3.to_csv('../preprocess_data/deta/std_{}'.format(csv_name),index=False,encoding='GBK')
+    df3.to_csv('../preprocess_data/deta/std_{}'.format(csv_name),encoding='GBK')
 
 def filldata2(csv_name):
     df=pd.read_csv('../preprocess_data/deta3/{}'.format(csv_name),encoding='GBK')
     df1=df.pivot(index=df.columns[1],columns=df.columns[0],values=df.columns[2])
     df1=df1.fillna(method='ffill')
-    df1.to_csv('../preprocess_data/deta/data_{}'.format(csv_name),index=False,encoding='GBK')
+    print(df1)
+    df1.to_csv('../preprocess_data/deta/data_{}'.format(csv_name),encoding='GBK')
     try:
         df2=df.pivot(index=df.columns[1],columns=df.columns[0],values='mean')
         df2=df2.fillna(method='ffill')
-        df2.to_csv('../preprocess_data/deta/mean_{}'.format(csv_name),index=False,encoding='GBK')
+        df2.to_csv('../preprocess_data/deta/mean_{}'.format(csv_name),encoding='GBK')
         df3=df.pivot(index=df.columns[1],columns=df.columns[0],values='std')
         df3=df2.fillna(method='ffill')
-        df3.to_csv('../preprocess_data/deta/std_{}'.format(csv_name),index=False,encoding='GBK')
+        df3.to_csv('../preprocess_data/deta/std_{}'.format(csv_name),encoding='GBK')
     except:
         return
+def changename(csv_name):
+    df=pd.read_csv('../preprocess_data/deta/{}'.format(csv_name),encoding='GBK')
+    df.columns=pd.Series(df.columns).apply(lambda x:str(x)[1:])
+    print(df)
+    df.to_csv('../preprocess_data/deta/{}'.format(csv_name),encoding='GBK')
+    
 #将数据合并到dataframe中，并写入prepocess/deta4文件
 #StandardDeviationOfDailyReturn120
 StandardDeviationOfDailyReturn120=pd.DataFrame(columns=['上市公司代码_Comcd','最新股票名称_Lstknm','日期_Date','日收益标准差_120日移动平均_Dstd120'])
@@ -278,6 +287,9 @@ file_name=name(r'../preprocess_data/deta3')
 for i in file_name:
     print(i)
     filldata2(i)
+file_name=name(r'../preprocess_data/deta')
+for i in file_name:
+    changename(i)
     
 
 
